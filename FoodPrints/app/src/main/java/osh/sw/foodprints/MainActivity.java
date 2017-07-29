@@ -47,12 +47,14 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
 
     String[] spinnerItems = new String[]{
+            "전체보기",
             "한식",
             "중식",
             "양식",
             "일식",
+            "패스트푸드",
             "분식",
-            "패스트푸드"
+            "디저트"
     };
 
     @Override
@@ -84,8 +86,34 @@ public class MainActivity extends AppCompatActivity {
         spinner.setAdapter(stringArrayAdapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(getApplicationContext(),getTitle(),Toast.LENGTH_SHORT).show();
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                switch (position) {
+                    case 0:
+                        setAllListAquery();
+                        break;
+                    case 1:
+                        setAquery(position);
+                        break;
+                    case 2:
+                        setAquery(position);
+                        break;
+                    case 3:
+                        setAquery(position);
+                        break;
+                    case 4:
+                        setAquery(position);
+                        break;
+                    case 5:
+                        setAquery(position);
+                        break;
+                    case 6:
+                        setAquery(position);
+                        break;
+                    case 7:
+                        setAquery(position);
+                        break;
+
+                }
             }
 
             @Override
@@ -96,6 +124,30 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
+    }
+
+    public void setAquery(int number){
+        AQuery aQuery=new AQuery(this);
+        aQuery.ajax(URL+"/"+number,String.class,new AjaxCallback<String>(){
+            @Override
+            public void callback(String url, String object, AjaxStatus status) {
+                Toast.makeText(getApplicationContext(),object,Toast.LENGTH_SHORT).show();
+                if(status.getCode()==200){
+                    try {
+                        JSONArray jsonArray=new JSONArray(object);
+                        parseFoodJson(jsonArray);
+                        setAdapter(jsonArray);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
+    }
+
+    public void setAllListAquery(){
         AQuery aQuery=new AQuery(this);
         aQuery.ajax(URL,String.class,new AjaxCallback<String>(){
             @Override
@@ -113,8 +165,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
     }
+
 
     public void setAdapter(JSONArray jsonArray){
         layoutManager=new LinearLayoutManager(this);
