@@ -246,5 +246,7 @@ typings/
 # dotenv environment variables file
 .env
 
+# Server config file
+config.js
 
 # End of https://www.gitignore.io/api/java,node,android,androidstudio
